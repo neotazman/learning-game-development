@@ -1,3 +1,6 @@
+// this is the video teaching me how to make this
+// https://www.youtube.com/watch?v=GVuU25pGaYo&t=1475s
+
 // getting the canvas as an element
 const canvas = document.getElementById('canvas')
 const canvasContext = canvas.getContext('2d')
@@ -8,9 +11,11 @@ canvas.height = window.innerHeight
 const images = {}
 images.player = new Image()
 images.player.src = 'cuphead.png'
-const characterActions = ['up', 'up right', 'right', 'down right', 'down', 'jump']
 
-class Character {
+//the character info
+const characterActions = ['up', 'up right', 'right', 'down right', 'down', 'jump']
+const characters = []
+class Character { // rewriting the character values as a class variable
     constructor(){
         this.width = 103.0625
         this.height = 113.125
@@ -19,29 +24,34 @@ class Character {
         this.x = 0
         this.y = 0
         this.speed = (Math.random() * 1.5) + 3.5
+        this.action = 'right'
+    }
+    draw() {
+        drawSprite(images.player, this.width * this.frameX, this.height * this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
+        //animate the sprites
+        if(this.frameX < 13) this.frameX++
+        else this.frameX = 4
+    }
+    update() {
+        //move player
+        if(this.action === 'right') {
+            if(this.x < canvas.width + this.width) this.x+= this.speed
+            else this.x = 0 - this.width
+        }
+
     }
 }
+characters.push(new Character())
 
-const playerWidth = 103.0625
-const playerHeight = 113.125
-let playerFrameX = 3
-let playerFrameY = 3
-let playerX = 0
-let playerY = 0
-const playerSpeed = 6
+
 
 function drawSprite(img, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight) { //s is sources image, d is destination
     canvasContext.drawImage(img, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight)
 }
 function animate(){
     canvasContext.clearRect(0, 0, canvas.width, canvas.height)
-    drawSprite(images.player, playerWidth * playerFrameX, playerHeight * playerFrameY, playerWidth, playerHeight, playerX, playerY, playerWidth, playerHeight)
-    //animate the sprites
-    if(playerFrameX < 13) playerFrameX++
-    else playerFrameX = 4
-    //move player
-    if(playerX < canvas.width + playerWidth) playerX+= playerSpeed
-    else playerX = 0 - playerWidth
+    characters[0].draw()
+    characters[0].update()
 }
 
 window.onload = setInterval(animate, 1000/30)
