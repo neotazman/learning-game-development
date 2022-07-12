@@ -14,7 +14,7 @@ images.player.src = 'cuphead.png'
 
 //the character info
 const characterActions = ['up', 'up right', 'right', 'down right', 'down', 'jump']
-const numberOfCharacters = 10
+const numberOfCharacters = 30
 const characters = []
 class Character { // rewriting the character values as a class variable
     constructor(){
